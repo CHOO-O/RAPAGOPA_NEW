@@ -1,0 +1,27 @@
+.header {
+  width: 100vw;
+  height: 60px;
+  background-color: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 0 30px;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1001;
+}
+
+.header-logo {
+  width: auto;
+  height: 30px;
+}
+
+.header-buttons {
+  width: 260px;
+  display: flex;
+  justify-content: space-between;
+}
