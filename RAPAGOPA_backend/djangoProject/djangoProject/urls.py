@@ -1,13 +1,13 @@
 from django.contrib import admin
 from django.urls import path
-from djangoProject.view import hello_rest_api
-# from djangoProject.view import UserAPIView
-from login.view import LoginView
+from user.view import UserListView, UserDetailView, UserLoginView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/hello/', hello_rest_api, name='hello_rest_api'),
-    # path('api/user/', UserAPIView.as_view(), name="UserAPIView"),
-    path('login/', LoginView.as_view(), name='login'),
+    # TB_USER
+    path('users/', UserListView.as_view(), name='user-list'),
+    path('users/<str:pk>/', UserDetailView.as_view(), name='user-detail'),
+    path('login/', UserLoginView.as_view(), name='user-login'),
 ]
 

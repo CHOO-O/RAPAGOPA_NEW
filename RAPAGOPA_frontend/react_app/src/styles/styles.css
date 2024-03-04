@@ -95,6 +95,17 @@ body {
   height: 1.35em;
   min-width: 1.35em;
   min-height: 1.35em;
-  background-color: #9b9b9b;
+  background-color: #ffffff;
   border-radius: 50%;
+  border: 0.15em solid #d9d9d9;
+}
+
+.radio-button:checked {
+  width: 1.35em;
+  height: 1.35em;
+  min-width: 1.35em;
+  min-height: 1.35em;
+  background-color: #ffffff;
+  border-radius: 50%;
+  border: 0.3em solid #f7981f;
 }

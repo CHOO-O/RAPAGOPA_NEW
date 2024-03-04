@@ -1,13 +1,49 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Dropdown from "../components/Dropdown";
 import { ReactComponent as Userprofile } from "../assets/userprofile.svg";
 import { ReactComponent as Camera } from "../assets/camera.svg";
+import axios from "axios";
 
 import "../styles/styles.css";
 import "../styles/Mypage.css";
 
 function Mypage() {
+  // =================== 로그인 여부 체크 ===================
+  const nav = useNavigate();
+  useEffect(() => {
+    const loginData = sessionStorage.getItem("loginData");
+    if (!loginData) {
+      nav("/");
+    }
+  }, [nav]);
+
+  // ===================== 진입 시 값 받아오기 =========================
+  useEffect(() => {
+    getInfos();
+  }, []);
+
+  const getInfos = async () => {
+    const loginDataString = sessionStorage.getItem("loginData");
+
+    let id = null;
+    if (loginDataString) {
+      const loginData = JSON.parse(loginDataString);
+      id = loginData.USER_ID;
+      console.log(id);
+    }
+
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/users/${id}/`);
+
+      console.log("됐어요");
+      console.log(response.data);
+    } catch (e) {
+      console.log("안됐어요", e);
+    }
+  };
+
   // ===================== selectbox 관리 =========================
   const years = Array.from(
     { length: 2024 - 1940 + 1 },
@@ -130,6 +166,7 @@ function Mypage() {
                   <label>
                     여
                     <input
+                      className="radio-button"
                       type="radio"
                       name="gender"
                       value="female"
