@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import { ReactComponent as Fullstar } from "../assets/full-star.svg";
 import { ReactComponent as Arrow } from "../assets/rightarrow.svg";
+import axios from "axios";
+
 import "../styles/styles.css";
 import "../styles/Main.css";
 
@@ -22,6 +24,21 @@ function Main() {
       nav("/");
     }
   }, [nav]);
+
+  // ===================== 진입 시 값 받아오기 =========================
+  useEffect(() => {
+    getInfos();
+  }, []);
+
+  const getInfos = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/restaurants/");
+      console.log(response.data);
+    } catch (e) {
+      console.log(e);
+      alert("오류가 발생하였습니다. 다시 시도해주세요.");
+    }
+  };
 
   const clickAddr = (e) => {
     e.preventDefault();

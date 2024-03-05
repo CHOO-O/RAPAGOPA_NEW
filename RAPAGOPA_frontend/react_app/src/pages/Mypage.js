@@ -53,6 +53,7 @@ function Mypage() {
       setGender(response.data.USER_GENDER);
       setOpenAge(response.data.USER_YEAR_OPEN_YN);
       setOpenMBTI(response.data.USER_MBTI_OPEN_YN);
+      setImageUrl(response.data.USER_IMAGE_URL);
     } catch (e) {
       alert("오류가 발생하였습니다. 다시 시도해주세요.");
     }
@@ -186,6 +187,7 @@ function Mypage() {
       USER_GENDER: gender, // gender는 상태로 관리되는 성별 정보
       USER_YEAR_OPEN_YN: openAge, // openAge는 상태로 관리되는 출생 연도 공개 여부
       USER_MBTI_OPEN_YN: openMBTI, // openMBTI는 상태로 관리되는 MBTI 공개 여부
+      USER_IMAGE_URL: uploadImg,
     };
 
     try {
@@ -243,7 +245,10 @@ function Mypage() {
           <p className="mypage-title">기본 정보</p>
           <div className="mypage-sections">
             <form className="mypage-form" id="formProfile">
-              <div className="mypage-img" onClick={handleImg}>
+              <div
+                className={isDisabled ? "mypage-img-disabled" : "mypage-img"}
+                onClick={handleImg}
+              >
                 {imageUrl ? (
                   <>
                     <img
@@ -403,28 +408,33 @@ function Mypage() {
             <div className="tags">#최대길이여섯</div>
             <div className="tags-add">+</div>
           </div>
-          <button type="button" className="red-button">
-            비밀번호 변경
-          </button>
-          <div>
-            {toggleChange === true ? (
-              <button
-                type="button"
-                className="orange-button"
-                onClick={letChange}
-              >
-                수정하기
-              </button>
-            ) : (
-              <button
-                type="button"
-                className="orange-button"
-                onClick={saveChanges}
-                disabled={nickOk === 1 || nickOk === 3 ? false : true}
-              >
-                변경내용 저장
-              </button>
-            )}
+          <div className="mypage-bottoms">
+            <button type="button" className="orange-button">
+              내 리뷰 관리
+            </button>
+            <button type="button" className="red-button">
+              비밀번호 변경
+            </button>
+            <div>
+              {toggleChange === true ? (
+                <button
+                  type="button"
+                  className="orange-button"
+                  onClick={letChange}
+                >
+                  수정하기
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="orange-button"
+                  onClick={saveChanges}
+                  disabled={nickOk === 1 || nickOk === 3 ? false : true}
+                >
+                  변경내용 저장
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

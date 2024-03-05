@@ -54,6 +54,14 @@
   display: flex;
 }
 
+.mypage-img-disabled {
+  height: auto;
+  width: auto;
+  display: flex;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
 .mypage-userprofile {
   width: 150px;
   height: auto;
@@ -137,4 +145,8 @@ label {
 .mypage-genders {
   display: flex;
   width: 25%;
+}
+
+.mypage-bottoms {
+  display: flex;
 }
