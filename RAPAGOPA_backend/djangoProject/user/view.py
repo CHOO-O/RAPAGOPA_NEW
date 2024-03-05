@@ -26,3 +26,35 @@ class UserLoginView(APIView):
             return Response({'message': 'Login successful', 'user_id': user.USER_ID, 'user_name': user.USER_NM})
         except User.DoesNotExist:
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+
+class UserUpdateInfoView(APIView):
+    def post(self, request, *args, **kwargs):
+        user_id = request.data.get('USER_ID')
+        if user_id:
+            try:
+                user = User.objects.get(USER_ID=user_id)
+                serializer = UserSerializer(user, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response({'message': 'User information updated successfully.'}, status=status.HTTP_200_OK)
+                else:
+                    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            except User.DoesNotExist:
+                return Response({'error': 'User does not exist.'}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({'error': 'User ID is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+class UserNickNameCheck(APIView):
+    def post(self, request, *args, **kwargs):
+        user_nicknm = request.data.get('USER_NICKNM')
+        user_id = request.data.get('USER_ID')
+        # 기존 닉네임 중복 확인 메서드 호출
+        result = User.nm_check(user_id, user_nicknm)
+
+        # 결과에 따라 응답 반환
+        if result == 1:
+            return Response(1, status=status.HTTP_200_OK)
+        elif result == 0:
+            return Response(0, status = status.HTTP_200_OK)
+        else:
+            return Response({'message': '오류'}, status=status.HTTP_400_BAD_REQUEST)

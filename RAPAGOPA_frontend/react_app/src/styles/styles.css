@@ -38,6 +38,11 @@ body {
   align-items: center;
 }
 
+.orange-button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .red-button {
   width: 120px;
   height: 40px;
@@ -91,6 +96,7 @@ body {
 }
 
 .radio-button {
+  margin-left: 5px;
   width: 1.35em;
   height: 1.35em;
   min-width: 1.35em;
@@ -108,4 +114,9 @@ body {
   background-color: #ffffff;
   border-radius: 50%;
   border: 0.3em solid #f7981f;
+}
+
+.radio-button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
