@@ -14,5 +14,6 @@ urlpatterns = [
     # TB_RESTAURANT
     path('restaurants/', RestaurantListView.as_view(), name='restaurant-list'),
     path('restaurants/<str:pk>/', RestaurantDetailView.as_view(), name='restaurant-detail'),
+    # TB_FOOD_REVIEW
 ]
 

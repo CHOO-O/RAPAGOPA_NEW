@@ -26,6 +26,8 @@ function Main() {
   }, [nav]);
 
   // ===================== 진입 시 값 받아오기 =========================
+  const [restArray, setRestArray] = useState([]);
+
   useEffect(() => {
     getInfos();
   }, []);
@@ -34,15 +36,27 @@ function Main() {
     try {
       const response = await axios.get("http://127.0.0.1:8000/restaurants/");
       console.log(response.data);
+      setRestArray([...response.data]);
     } catch (e) {
       console.log(e);
       alert("오류가 발생하였습니다. 다시 시도해주세요.");
     }
   };
 
+  // =================== 주소 클릭 시 네이버맵 새 창 열기 ==================
   const clickAddr = (e) => {
     e.preventDefault();
-    alert("새탭에 받아온 주소(resNaver) 이용해 띄우기 구현");
+    const url = e.target.getAttribute("data");
+    if (url) {
+      window.open(url, "_blank");
+    }
+  };
+
+  // ===================== 각 식당 리뷰 보러가기 =======================
+  const gotoReview = (e) => {
+    e.preventDefault();
+    const resNo = e.target.getAttribute("data");
+    // 여기서 resNo를 파라미터로 던져 리뷰테이블에서 값을 가져오기
   };
 
   return (
@@ -50,30 +64,62 @@ function Main() {
       <Header />
       <div className="mypage-bgr">
         <div className="white-box">
-          <div className="rstr-container">
-            <div className="rstr-image"></div>
-            <div className="rstr-middle">
-              <div className="rstr-name">식당이름</div>
-              <div className="total-score">
-                별점
-                <Fullstar />
-                {totScore}
+          {restArray.map((restaurantData) => (
+            <div key={restaurantData.id} className="rstr-container">
+              <div className="rstr-image"></div>
+              <div className="rstr-middle">
+                <div className="rstr-name">{restaurantData.RESTAURANT_NM}</div>
+                <div className="total-score">
+                  별점
+                  <Fullstar />
+                  {totScore}
+                </div>
+                <div
+                  data={restaurantData.RESTAURANT_NAVER_URL}
+                  onClick={clickAddr}
+                >
+                  {restaurantData.RESTAURANT_DORO_ADDR}
+                  <Arrow className="right-arrow" />
+                </div>
+                <div>
+                  영업시간
+                  {restaurantData.RESTAURANT_TIME
+                    ? " " +
+                      restaurantData.RESTAURANT_TIME.slice(0, 2) +
+                      ":" +
+                      restaurantData.RESTAURANT_TIME.slice(2, 4) +
+                      " ~ " +
+                      restaurantData.RESTAURANT_TIME.slice(5, 7) +
+                      ":" +
+                      restaurantData.RESTAURANT_TIME.slice(7, 9)
+                    : ""}
+                </div>
+                <div>
+                  {restaurantData.RESTAURANT_BREAK_TIME
+                    ? "쉬는시간 " +
+                      restaurantData.RESTAURANT_BREAK_TIME.slice(0, 2) +
+                      ":" +
+                      restaurantData.RESTAURANT_BREAK_TIME.slice(2, 4) +
+                      " ~ " +
+                      restaurantData.RESTAURANT_BREAK_TIME.slice(5, 7) +
+                      ":" +
+                      restaurantData.RESTAURANT_BREAK_TIME.slice(7, 9)
+                    : ""}
+                </div>
               </div>
-              <div onClick={clickAddr}>
-                클릭시 네이버지도 링크 연결
-                <Arrow className="right-arrow" />
+              <div className="rstr-right">
+                <div className="tags">#{restaurantData.RESTAURANT_CATE}</div>
+                <div
+                  className="main-goto"
+                  onClick={gotoReview}
+                  data={restaurantData.RESTAURANT_NO}
+                >
+                  리뷰 보러가기
+                  <Arrow className="right-arrow" />
+                </div>
               </div>
-              <div>영업시간어쩌구</div>
-              <div>전화번호클릭시복사기능?</div>
             </div>
-            <div className="rstr-right">
-              <div className="tags">#Cate</div>
-              <div className="main-goto">
-                리뷰 보러가기
-                <Arrow className="right-arrow" />
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>

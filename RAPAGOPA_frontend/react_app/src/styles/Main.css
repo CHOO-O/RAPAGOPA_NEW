@@ -3,8 +3,9 @@
   box-sizing: border-box;
   padding: 20px;
   width: 95%;
-  height: 180px;
+  min-height: 180px;
   background-color: #eeeeee;
+  margin-bottom: 30px;
 }
 
 .rstr-image {
@@ -30,7 +31,7 @@
 }
 
 .rstr-middle {
-  width: 35%;
+  width: 650px;
   display: flex;
   flex-direction: column;
 }

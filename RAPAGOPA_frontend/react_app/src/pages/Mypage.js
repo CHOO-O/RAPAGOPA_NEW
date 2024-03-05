@@ -133,7 +133,7 @@ function Mypage() {
     if (e.target.id == "male") {
       setGender("M");
     } else {
-      setGender("F");
+      setGender("W");
     }
   };
 
@@ -340,10 +340,10 @@ function Mypage() {
                         className="radio-button"
                         type="radio"
                         name="gender"
-                        value="F"
+                        value="W"
                         onChange={handleChangeGender}
                         disabled={isDisabled}
-                        checked={gender == "F"}
+                        checked={gender == "W"}
                       />
                     </label>
                   </div>

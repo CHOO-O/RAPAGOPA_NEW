@@ -8,6 +8,7 @@ import Main from "./pages/Main";
 import Mypage from "./pages/Mypage";
 import Myreview from "./pages/Myreview";
 import Reviewform from "./pages/Reviewform";
+import Restaurantreview from "./pages/Restaurantreview";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Route path="/mypage" element={<Mypage />}></Route>
       <Route path="/myreview" element={<Myreview />}></Route>
       <Route path="/reviewform" element={<Reviewform />}></Route>
+      <Route path="/restaurantreview" element={<Restaurantreview />}></Route>
     </Routes>
   );
 }

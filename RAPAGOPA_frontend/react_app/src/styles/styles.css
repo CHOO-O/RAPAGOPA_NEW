@@ -79,6 +79,7 @@ body {
 .white-box {
   width: 70%;
   height: 600px;
+  overflow-y: auto;
   background: #ffffff;
   box-sizing: border-box;
   display: flex;
