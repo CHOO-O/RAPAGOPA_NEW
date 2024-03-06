@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Dropdown from "../components/Dropdown";
+import Tagmodal from "../components/Tagmodal";
 import { ReactComponent as Userprofile } from "../assets/userprofile.svg";
 import { ReactComponent as Camera } from "../assets/camera.svg";
 import axios from "axios";
@@ -18,6 +19,10 @@ function Mypage() {
   const [imageUrl, setImageUrl] = useState(); //프로필이미지*
   const [openAge, setOpenAge] = useState(); //나이공개여부
   const [openMBTI, setOpenMBTI] = useState(); //MBTI공개여부
+  const [fl1, setfl1] = useState(); // 취향1-1
+  const [fl2, setfl2] = useState(); // 취향1-2
+  const [fk1, setfk1] = useState(); // 취향2-1
+  const [fk2, setfk2] = useState(); // 취향2-2
 
   // =================== 로그인 여부 체크 ===================
   const nav = useNavigate();
@@ -29,6 +34,9 @@ function Mypage() {
   }, [nav]);
 
   // ===================== 진입 시 값 받아오기 =========================
+  const [flArray, setFlArray] = useState([]);
+  const [fkArray, setFkArray] = useState([]);
+
   useEffect(() => {
     getInfos();
   }, []);
@@ -44,6 +52,14 @@ function Mypage() {
     }
 
     try {
+      const flCodes = await axios.get(`http://127.0.0.1:8000/food-like-codes/`); //음식취향
+      console.log(flCodes.data);
+      setFlArray([...flCodes.data]);
+
+      const fkCodes = await axios.get(`http://127.0.0.1:8000/food-kind-codes/`); //음식취향
+      console.log(fkCodes.data);
+      setFkArray([...fkCodes.data]);
+
       const response = await axios.get(`http://127.0.0.1:8000/users/${id}/`);
       console.log(response.data);
       setNickNm(response.data.USER_NICKNM);
@@ -54,6 +70,10 @@ function Mypage() {
       setOpenAge(response.data.USER_YEAR_OPEN_YN);
       setOpenMBTI(response.data.USER_MBTI_OPEN_YN);
       setImageUrl(response.data.USER_IMAGE_URL);
+      setfk1(response.data.USER_FOOD_CATE_1);
+      setfk2(response.data.USER_FOOD_CATE_2);
+      setfl1(response.data.USER_FOOD_LIKE_1);
+      setfl2(response.data.USER_FOOD_LIKE_2);
     } catch (e) {
       alert("오류가 발생하였습니다. 다시 시도해주세요.");
     }
@@ -188,6 +208,10 @@ function Mypage() {
       USER_YEAR_OPEN_YN: openAge, // openAge는 상태로 관리되는 출생 연도 공개 여부
       USER_MBTI_OPEN_YN: openMBTI, // openMBTI는 상태로 관리되는 MBTI 공개 여부
       USER_IMAGE_URL: uploadImg,
+      USER_FOOD_CATE_1: fk1,
+      USER_FOOD_CATE_2: fk2,
+      USER_FOOD_LIKE_1: fl1,
+      USER_FOOD_LIKE_2: fl2,
     };
 
     try {
@@ -237,9 +261,74 @@ function Mypage() {
     }
   };
 
+  // ====================== tagmodal =================
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const flCodeNm = (code) => {
+    const foundItem = flArray.find((item) => item.code_cd === code);
+    return foundItem.code_nm;
+  };
+
+  const fkCodeNm = (code) => {
+    const foundItem = fkArray.find((item) => item.code_cd === code);
+    return foundItem.code_nm;
+  };
+
+  const handleflTags = (e) => {
+    const val = e.target.getAttribute("data");
+    if (val == fl1) {
+      setfl1("");
+    } else if (val == fl2) {
+      setfl2("");
+    } else if (fl1 == "") {
+      setfl1(val);
+    } else if (fl2 == "") {
+      setfl2(val);
+    }
+  };
+
+  const handlefkTags = (e) => {
+    const val = e.target.getAttribute("data");
+    if (val == fk1) {
+      setfk1("");
+    } else if (val == fk2) {
+      setfk2("");
+    } else if (fk1 == "") {
+      setfk1(val);
+    } else if (fk2 == "") {
+      setfk2(val);
+    }
+  };
+
   return (
     <div className="header-padding">
       <Header />
+      <Tagmodal isOpen={isModalOpen} onClose={closeModal}>
+        <div className="tags-container">
+          <div className="tags-title">취향1</div>
+          {flArray.map((flData) => (
+            <div className="tags" onClick={handleflTags} data={flData.code_cd}>
+              {"#" + flData.code_nm}
+            </div>
+          ))}
+        </div>
+        <div className="tags-container">
+          <div className="tags-title">취향2</div>
+          {fkArray.map((fkData) => (
+            <div className="tags" onClick={handlefkTags} data={fkData.code_cd}>
+              {"#" + fkData.code_nm}
+            </div>
+          ))}
+        </div>
+      </Tagmodal>
       <div className="mypage-bgr">
         <div className="white-box">
           <p className="mypage-title">기본 정보</p>
@@ -360,7 +449,6 @@ function Mypage() {
                   </label>
                   <input
                     type="checkbox"
-                    // className="radio-button"
                     name="openAge"
                     value="N"
                     onChange={handleClickOpen}
@@ -378,7 +466,7 @@ function Mypage() {
                       onChange={handleChangeMBTI}
                     />
                     <input
-                      type="checkbox" // className="radio-button"
+                      type="checkbox"
                       name="openMBTI"
                       value="N"
                       onChange={handleClickOpen}
@@ -404,9 +492,17 @@ function Mypage() {
             </form>
           </div>
           <div className="mypage-sections">
-            <div className="tags">#맵찔</div>
-            <div className="tags">#최대길이여섯</div>
-            <div className="tags-add">+</div>
+            {fl1 ? <div className="tags">#{flCodeNm(fl1)}</div> : ""}
+            {fl2 ? <div className="tags">#{flCodeNm(fl2)}</div> : ""}
+            {fk1 ? <div className="tags">#{fkCodeNm(fk1)}</div> : ""}
+            {fk2 ? <div className="tags">#{fkCodeNm(fk2)}</div> : ""}
+            <input
+              type="button"
+              onClick={openModal}
+              className="tags-add"
+              value="+"
+              disabled={isDisabled}
+            ></input>
           </div>
           <div className="mypage-bottoms">
             <button type="button" className="orange-button">

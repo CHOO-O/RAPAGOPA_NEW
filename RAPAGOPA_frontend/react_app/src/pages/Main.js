@@ -57,6 +57,7 @@ function Main() {
     e.preventDefault();
     const resNo = e.target.getAttribute("data");
     // 여기서 resNo를 파라미터로 던져 리뷰테이블에서 값을 가져오기
+    nav(`/restaurantreview/${resNo}`);
   };
 
   return (

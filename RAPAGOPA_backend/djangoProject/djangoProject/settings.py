@@ -36,7 +36,10 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'user',
-    'restaurant'
+    'restaurant',
+    'review',
+    'apis',
+    'codes'
 ]
 
 MIDDLEWARE = [

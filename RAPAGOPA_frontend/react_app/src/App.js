@@ -18,7 +18,10 @@ function App() {
       <Route path="/mypage" element={<Mypage />}></Route>
       <Route path="/myreview" element={<Myreview />}></Route>
       <Route path="/reviewform" element={<Reviewform />}></Route>
-      <Route path="/restaurantreview" element={<Restaurantreview />}></Route>
+      <Route
+        path="/restaurantreview/:resNo"
+        element={<Restaurantreview />}
+      ></Route>
     </Routes>
   );
 }

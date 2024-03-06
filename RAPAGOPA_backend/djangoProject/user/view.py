@@ -58,3 +58,18 @@ class UserNickNameCheck(APIView):
             return Response(0, status = status.HTTP_200_OK)
         else:
             return Response({'message': '오류'}, status=status.HTTP_400_BAD_REQUEST)
+        
+class UserIDtoInfoAPIView(APIView):
+    def get(self, request, user_id, format=None):
+        try:
+            user = User.objects.get(USER_ID=user_id)
+            user_info = {
+                'USER_NICKNM': user.USER_NICKNM,
+                'USER_GENDER': user.USER_GENDER,
+                'USER_MBTI': user.USER_MBTI,
+                'USER_YEAR_OPEN_YN': user.USER_YEAR_OPEN_YN,
+                'USER_MBTI_OPEN_YN': user.USER_MBTI_OPEN_YN
+            }
+            return Response(user_info, status=status.HTTP_200_OK)
+        except User.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)

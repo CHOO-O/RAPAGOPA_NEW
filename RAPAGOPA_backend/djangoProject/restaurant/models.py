@@ -18,3 +18,11 @@ class Restaurant(models.Model):
 
     class Meta:
         db_table = 'TB_RESTAURANT'
+
+    @classmethod
+    def get_restaurant_name_by_id(cls, restaurant_id):
+      try:
+          restaurant = cls.objects.get(RESTAURANT_NO=restaurant_id)
+          return restaurant.RESTAURANT_NM
+      except cls.DoesNotExist:
+          return None
