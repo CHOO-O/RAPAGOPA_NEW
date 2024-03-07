@@ -23,4 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 
 # py
-settings.py
+/RAPAGOPA_backend\djangovenv\Scripts\core\core\settings.py
