@@ -22,32 +22,30 @@ function Login() {
   };
 
   // ===================== Login =======================
-  // const onClickLogin = () => {
-  //   alert("Clicked!");
 
-  //   nav("/mypage");
-  // };
-  const [data, setData] = useState(null);
+  // const [sesData, setSesData] = useState();
   const onClickLogin = async () => {
     try {
       const loginData = {
         USER_ID: id,
         USER_PWD: pwd,
       };
-      console.log(loginData);
-      // const response = await axios.get("http://127.0.0.1:8000/api/user/");
-      // setData(response.data);
-      // console.log(response.data);
+
       const response = await axios.post(
         "http://127.0.0.1:8000/login/",
         loginData
       );
       console.log(response.data);
+      console.log(response);
+      if (response.status == 200) {
+        sessionStorage.setItem("loginData", JSON.stringify(loginData));
+        nav("/main");
+      } else {
+        alert("아이디/비밀번호를 확인해주세요.");
+      }
     } catch (e) {
-      console.log(e);
+      alert("아이디/비밀번호를 확인해주세요.");
     }
-
-    // nav("/mypage");
   };
 
   return (

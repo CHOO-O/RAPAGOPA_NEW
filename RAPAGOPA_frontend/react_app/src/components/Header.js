@@ -17,6 +17,12 @@ function Header() {
     nav("/mypage");
   };
 
+  // ===================== 로그아웃 클릭 =======================
+  const onClickLogout = () => {
+    sessionStorage.removeItem("loginData");
+    nav("/");
+  };
+
   return (
     <div className="header">
       <Logo className="header-logo" onClick={onClickLogo} />
@@ -24,7 +30,9 @@ function Header() {
         <div className="orange-button" onClick={onClickMypg}>
           마이페이지
         </div>
-        <div className="orange-button">로그아웃</div>
+        <div className="orange-button" onClick={onClickLogout}>
+          로그아웃
+        </div>
       </div>
     </div>
   );
